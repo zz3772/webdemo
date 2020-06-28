@@ -12,7 +12,7 @@
           <el-button type="primary" @click="onSelect">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onCreate">新建</el-button>
+          <el-button type="primary" @click="dialogFormVisible = true">新建</el-button>
         </el-form-item>
         </el-form>
         <el-table align="center" :data="tableData" border="" style="width: 1001px">
@@ -23,11 +23,31 @@
           <el-table-column prop="createTime" label="创建时间" width="140px"/>
         </el-table>
       </el-card>
+      <el-dialog title="新建页面" :visible.sync="dialogFormVisible">
+        <el-form :model="form">
+          <el-form-item label="用例名称" :label-width="formLabelWidth">
+            <el-input v-model="form.caseName" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="超时时间" :label-width="formLabelWidth">
+            <el-input v-model="form.outTime" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="用例描述" :label-width="formLabelWidth">
+            <el-input v-model="form.caseDesc" autocomplete="off"></el-input>
+          </el-form-item>
+          <el-form-item label="创建时间" :label-width="formLabelWidth">
+            <el-input v-model="form.createTime" autocomplete="off"></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="onCreate">确 定</el-button>
+        </div>
+      </el-dialog>
   </div>
 </template>
 
 <script>
-import { getList } from '@/api/testCase'
+import { getList, addCase } from '@/api/testCase'
 import ContextMenu from './ContextMenu.vue'
 export default {
   name: 'TestCase',
@@ -49,7 +69,15 @@ export default {
         caseName: '',
         caseDesc: ''
       },
-      tableData: []
+      tableData: [],
+      dialogFormVisible: false,
+      form: {
+        caseName: '',
+        outTime: '',
+        caseDesc: '',
+        createTime: ''
+      },
+      formLabelWidth: '80px'
     }
   },
   methods: {
@@ -62,18 +90,13 @@ export default {
       })
     },
     onCreate () {
-
-    },
-    openMenu (e, data) {
-      console.log(data)
-      this.menuOffset.offsetLeft = this.$el.getBoundingClientRect().left // container margin left
-      this.menuOffset.offsetWidth = this.$el.offsetWidth // container width
-      this.menuOffset.clientX = e.clientX
-      this.menuOffset.clientY = e.clientY
-      this.currentData = data
-    },
-    handleClick (vm, event) {
-      alert(`「${vm.$slots.default[0].text}」被点击啦！`)
+      addCase(this.form).then(res => {
+        this.dialogFormVisible = false
+        this.$message({
+          message: '保存成功',
+          type: 'success'
+        })
+      })
     }
   }
 }

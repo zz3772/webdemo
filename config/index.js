@@ -10,6 +10,7 @@ module.exports = {
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
+    //代理转发
     proxyTable: {
       '/api': {
         target: `http://127.0.0.1:8088/api`,
