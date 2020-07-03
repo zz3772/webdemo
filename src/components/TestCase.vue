@@ -14,15 +14,15 @@
         <el-form-item>
           <el-button type="primary" @click="dialogFormVisible = true">新建</el-button>
         </el-form-item>
-        </el-form>
-        <el-table align="center" :data="tableData" border="" style="width: 1001px">
-          <el-table-column prop="id" label="ID" width="60px"/>
-          <el-table-column prop="caseName" label="用例名称" width="300px"/>
-          <el-table-column prop="outTime" label="超时时间（秒）" width="200px"/>
-          <el-table-column prop="caseDesc" label="用例描述" width="300px"/>
-          <el-table-column prop="createTime" label="创建时间" width="140px"/>
-        </el-table>
-      </el-card>
+      </el-form>
+      <el-table align="center" :data="tableData" border="" style="width: 1001px">
+        <el-table-column prop="id" label="ID" width="60px"/>
+        <el-table-column prop="caseName" label="用例名称" width="300px"/>
+        <el-table-column prop="outTime" label="超时时间（秒）" width="200px"/>
+        <el-table-column prop="caseDesc" label="用例描述" width="300px"/>
+        <el-table-column prop="createTime" label="创建时间" width="140px"/>
+      </el-table>
+    </el-card>
       <el-dialog title="新建页面" :visible.sync="dialogFormVisible">
         <el-form :model="form">
           <el-form-item label="用例名称" :label-width="formLabelWidth">
@@ -48,23 +48,10 @@
 
 <script>
 import { getList, addCase } from '@/api/testCase'
-import ContextMenu from './ContextMenu.vue'
 export default {
   name: 'TestCase',
-  components: {
-    ContextMenu
-  },
-  props: {
-    theme: String
-  },
   data () {
     return {
-      menuOffset: {
-        offsetLeft: 0,
-        offsetWidth: 0,
-        clientX: 0,
-        clientY: 0
-      },
       serchData: {
         caseName: '',
         caseDesc: ''
